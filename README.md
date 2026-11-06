@@ -7,10 +7,12 @@ Live at https://poetrywallpaper.vercel.app
 
 ## How it works
 
-1. **The poems live in one file.** `data/poems.ts` holds 48 public-domain
-   poems about making the most of time, from Horace to the 1920s. Each
-   entry has a title, author, year of first publication, and the text
-   exactly as it should print.
+1. **The poems live in `data/poems/`.** A few hundred public-domain poems
+   in numbered batch files, from the Renaissance to the 1920s: the carpe
+   diem poems the list started with, then Shakespeare and his
+   contemporaries, the Romantics, the Victorians, Dickinson, the American
+   poets, Housman and Frost. Each entry has a title, author, year of first
+   publication, and the text exactly as it should print.
 
 2. **Each day gets one poem.** The order is a shuffle seeded by the year, so
    the same day shows the same poem on every device, and the year does not
@@ -122,7 +124,8 @@ The web page takes `?d=` and `?theme=` the same way.
 
 ## Adding or changing poems
 
-1. Open `data/poems.ts`.
+1. Open a batch in `data/poems/`, or start a new numbered file there and
+   add it to `data/poems/index.ts`.
 2. Add an entry with `title`, `author`, `year` and `text`. Keep the text
    exactly as it should print: leading spaces are indentation, a blank line
    is a stanza break.

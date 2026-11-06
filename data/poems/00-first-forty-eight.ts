@@ -18,15 +18,9 @@
  * seeded by the year and the length of this list), so add in batches rather
  * than one at a time if you want past days to stay put.
  */
-export type Poem = {
-  title: string;
-  author: string;
-  /** Year of first publication. */
-  year: number;
-  text: string;
-};
+import type { Poem } from "@/data/poem-type";
 
-export const poems: Poem[] = [
+export const batch: Poem[] = [
   {
     title: "Ode I.11 (Carpe Diem)",
     author: "Horace, translated by John Conington",
