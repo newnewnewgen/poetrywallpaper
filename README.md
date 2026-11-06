@@ -48,15 +48,24 @@ One macro, two triggers, two actions.
 1. Open MacroDroid and add a macro.
 2. **Trigger:** Day/Time, 07:00, every day. This fetches the new day's poem.
 3. **Trigger:** Day/Time, 19:00, every day. This switches to the dark one.
-4. **Action:** HTTP Request. Method GET. Turn on "Save response to file"
-   and pick a filename, for example `poem.png`. URL, with your own time
-   zone:
+4. **Action:** HTTP Request. Method GET. URL, with your own time zone:
 
        https://poetrywallpaper.vercel.app/wallpaper?tz=America/Toronto
 
-5. **Action:** Set Wallpaper. Choose Lock screen, and choose the file from
-   step 4.
-6. Save the macro and run it once by hand to check the lock screen changes.
+   Then, in the same action:
+   - Toggle on **Save HTTP response to file**.
+   - Choose **Storage Access Framework** as the way to save it.
+   - Pick a folder and name the file `poem.png`.
+
+   Nothing else in this action needs changing. No headers, no body, and
+   no saving to a variable.
+5. Run the HTTP Request action once on its own (long press it, Test
+   action) so `poem.png` exists before the next step.
+6. **Action:** Set Wallpaper. Choose Lock screen. For the image, choose
+   **Static filename** and browse to the `poem.png` from step 4. The
+   request overwrites that same file every run, so a fixed name is all
+   you need.
+7. Save the macro and run it once by hand to check the lock screen changes.
 
 Time zones are IANA names such as `America/Toronto`, `America/Vancouver`,
 `Europe/London`, `Asia/Tokyo`.
