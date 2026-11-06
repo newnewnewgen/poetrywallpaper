@@ -76,6 +76,11 @@ body { -webkit-font-smoothing: antialiased; }
 }
 .poem-gap { display: block; height: 1.6em; }
 
+.poem-footer a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 .poem-footer {
   display: flex;
   justify-content: space-between;

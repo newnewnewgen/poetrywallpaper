@@ -110,7 +110,16 @@ export default function PoemOfTheDay() {
 
       <footer className="poem-footer">
         <span>A poem a day</span>
-        <span>Light by day, dark by night</span>
+        <span>
+          Blank home screen to match:{" "}
+          <a href="/blank?theme=light" download="blank-light.png">
+            light
+          </a>
+          {" · "}
+          <a href="/blank?theme=dark" download="blank-dark.png">
+            dark
+          </a>
+        </span>
       </footer>
     </div>
   );

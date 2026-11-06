@@ -77,6 +77,27 @@ Time zones are IANA names such as `America/Toronto`, `America/Vancouver`,
 2. In the Automation tab, add two Time of Day automations, 7:00 and 19:00,
    that run the shortcut.
 
+## Optional: a matching home screen
+
+The lock screen is paper by day and ink by night. If you want the home
+screen to match, `/blank` gives a flat background in the same two colours.
+
+Download once and set by hand:
+
+- Light: https://poetrywallpaper.vercel.app/blank?theme=light
+- Dark: https://poetrywallpaper.vercel.app/blank?theme=dark
+
+Or let the macro switch it with the lock screen. Add two more actions after
+the ones above:
+
+1. **Action:** HTTP Request, GET, URL
+   `https://poetrywallpaper.vercel.app/blank?tz=America/Toronto`.
+   Save HTTP response to file, Storage Access Framework, name it `blank.png`.
+2. **Action:** Set Wallpaper, Home screen, Static filename, `blank.png`.
+
+`/blank` takes the same `tz`, `theme`, `w` and `h` parameters as the
+wallpaper. Both links are also in the footer of the page.
+
 ## Tuning the wallpaper
 
 Add these to the URL after `?tz=...` with `&`.
