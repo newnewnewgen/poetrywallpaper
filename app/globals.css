@@ -1,0 +1,99 @@
+/* The typewriter face, Courier Prime, comes from the @fontsource package the
+   layout imports, the same files the wallpaper is rendered with. */
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body { -webkit-font-smoothing: antialiased; }
+
+/* Paper by day, ink by night. The theme is an attribute set by the clock, not
+   by the system preference: the point is the hour where the reader is. */
+.poem-page {
+  --paper: #f4f1ea;
+  --ink: #2b2a27;
+  --ink-dim: rgba(43, 42, 39, 0.55);
+  --rule: rgba(43, 42, 39, 0.12);
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Courier Prime", "Courier New", Courier, monospace;
+  transition: background-color 0.6s ease, color 0.6s ease;
+}
+.poem-page[data-theme="dark"] {
+  --paper: #111111;
+  --ink: #d9d5cc;
+  --ink-dim: rgba(217, 213, 204, 0.5);
+  --rule: rgba(217, 213, 204, 0.12);
+  color-scheme: dark;
+}
+
+/* The sheet: one measure, left-aligned, centred on the page. The measure is
+   set in ch so it is the same number of typewriter columns at every size. */
+.poem-sheet {
+  flex: 1;
+  width: 100%;
+  max-width: calc(64ch + 64px);
+  margin: 0 auto;
+  padding: 12vh 32px 14vh;
+}
+.poem-view { animation: poem-in 0.5s ease both; }
+@keyframes poem-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+.poem-date {
+  color: var(--ink-dim);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 0 0 2.4em;
+}
+.poem-title {
+  font-size: clamp(17px, 1rem + 0.35vw, 21px);
+  line-height: 1.5;
+  font-weight: 400;
+  margin: 0 0 0.35em;
+}
+.poem-byline {
+  color: var(--ink-dim);
+  font-size: clamp(14px, 0.85rem + 0.2vw, 16px);
+  margin: 0 0 2.6em;
+}
+.poem-body {
+  font-size: clamp(15px, 0.9rem + 0.25vw, 18px);
+  line-height: 1.6;
+}
+/* Indentation inside the line is the poem's own and is kept (pre-wrap). A
+   line too long for the measure turns with a hanging indent four columns
+   past that line's own indent. */
+.poem-line {
+  display: block;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  padding-left: var(--hang, 4ch);
+  text-indent: calc(-1 * var(--hang, 4ch));
+}
+.poem-gap { display: block; height: 1.6em; }
+
+.poem-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px 32px;
+  border-top: 1px solid var(--rule);
+  color: var(--ink-dim);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 640px) {
+  .poem-sheet { padding-left: 20px; padding-right: 20px; }
+  .poem-body { font-size: 14px; }
+  .poem-footer { flex-direction: column; align-items: center; text-align: center; padding: 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .poem-view { animation: none; }
+  .poem-page { transition: none; }
+}
