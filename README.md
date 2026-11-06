@@ -1,57 +1,118 @@
-# A poem a day
+# Poetry wallpaper
 
-One carpe diem poem for each day of the year, set in a typewriter face.
-Light by day, dark by night. Built to be a phone lock screen that changes
-every morning.
+A poem a day on your phone's lock screen. One carpe diem poem for each day
+of the year, set in a typewriter face. Light during the day, dark at night.
 
-- `/` is the page: today's poem and nothing else. `?d=2026-03-04` previews
-  a day; `?theme=dark` or `?theme=light` pins the theme.
-- `/wallpaper` is the same poem as a PNG for a phone automation to fetch.
+Live at https://poetrywallpaper.vercel.app
 
-## Lock screen on Android with MacroDroid
+## How it works
 
-One macro, two triggers.
+1. **The poems live in one file.** `data/poems.ts` holds 48 public-domain
+   poems about making the most of time, from Horace to the 1920s. Each
+   entry has a title, author, year of first publication, and the text
+   exactly as it should print.
 
-1. Triggers: **Day/Time** at 07:00 and **Day/Time** at 19:00. The morning
-   one brings the new poem, the evening one switches to dark.
-2. Action: **HTTP Request**, GET, with *save response to file* on.
-   URL (put in your own time zone):
+2. **Each day gets one poem.** The order is a shuffle seeded by the year, so
+   the same day shows the same poem on every device, and the year does not
+   read the list top to bottom. When the list runs out partway through the
+   year, the next pass is reshuffled. See `lib/poemOfTheDay.ts`.
+
+3. **The day comes from your clock.** On the web page it is the browser's
+   local date. For the wallpaper it is whatever time zone you pass in the
+   URL, because the server has no idea where your phone is.
+
+4. **Light by day, dark by night.** From 7:00 to 18:59 the page is paper
+   and ink. From 19:00 to 6:59 it is dark. Same rule for the wallpaper,
+   using the time zone from the URL.
+
+5. **The wallpaper is a PNG the server draws on request.**
+   `app/wallpaper/route.tsx` lays the poem out for a phone screen and
+   returns an image. Your phone's automation app fetches it and sets it as
+   the lock screen.
+
+6. **Typesetting respects the poem.** Indentation is kept exactly as
+   written. A line too long for the screen turns with a hanging indent so
+   it never reads as a new line. The poem goes in the band between the
+   clock at the top and the shortcuts at the bottom, at the largest size
+   that fits it whole. A long poem is set in two or three columns at a
+   smaller size. A poem too long even for that is cut at a stanza, with an
+   ellipsis to say so. See `lib/typeset.ts`.
+
+7. **Pushes deploy.** The repo is connected to Vercel. Push to `main` and
+   the site rebuilds in about a minute.
+
+## Set it up on Android with MacroDroid
+
+One macro, two triggers, two actions.
+
+1. Open MacroDroid and add a macro.
+2. **Trigger:** Day/Time, 07:00, every day. This fetches the new day's poem.
+3. **Trigger:** Day/Time, 19:00, every day. This switches to the dark one.
+4. **Action:** HTTP Request. Method GET. Turn on "Save response to file"
+   and pick a filename, for example `poem.png`. URL, with your own time
+   zone:
 
        https://poetrywallpaper.vercel.app/wallpaper?tz=America/Toronto
 
-3. Action: **Set Wallpaper**, lock screen, from that file.
+5. **Action:** Set Wallpaper. Choose Lock screen, and choose the file from
+   step 4.
+6. Save the macro and run it once by hand to check the lock screen changes.
 
-The time zone decides both which day's poem you get and whether it is the
-light or the dark one (dark from 19:00 to 06:59).
+Time zones are IANA names such as `America/Toronto`, `America/Vancouver`,
+`Europe/London`, `Asia/Tokyo`.
 
-Other query parameters:
+## Set it up on iPhone with Shortcuts
 
-| param    | meaning                                                | default      |
-| -------- | ------------------------------------------------------ | ------------ |
-| `tz`     | IANA time zone                                         | `UTC`        |
-| `theme`  | `light` or `dark`                                      | by the hour  |
-| `d`      | `YYYY-MM-DD`, pin a day                                | today in tz  |
-| `w`, `h` | pixels                                                 | 1080 × 2340  |
-| `top`    | pixels kept clear at the top (clock, notifications)    | 22% of `h`   |
-| `bottom` | pixels kept clear at the bottom (phone, camera)        | 16% of `h`   |
+1. Make a Shortcut with two actions: **Get Contents of URL** (the same URL
+   as above) then **Set Wallpaper** with the lock screen chosen.
+2. In the Automation tab, add two Time of Day automations, 7:00 and 19:00,
+   that run the shortcut.
 
-The poem sits in the band between `top` and `bottom`, at the largest size
-at which it fits whole in one column. A long poem goes into two or three
-columns at a smaller size. A poem that will not fit even then is cut at a
-stanza, and an ellipsis says so.
+## Tuning the wallpaper
 
-## The poems
+Add these to the URL after `?tz=...` with `&`.
 
-`data/poems.ts`. All published before 1930 and in the public domain in the
-US; each entry carries its year of first publication. Text is kept as it
-should print: indentation is preserved, a blank line is a stanza break.
+| parameter | what it does | default |
+| --- | --- | --- |
+| `tz` | time zone, picks the day and light or dark | `UTC` |
+| `theme` | `light` or `dark`, overrides the clock | by the hour |
+| `d` | `YYYY-MM-DD`, show a specific day | today |
+| `w`, `h` | image size in pixels | `1080`, `2340` |
+| `top` | pixels kept clear at the top for the clock | 22% of height |
+| `bottom` | pixels kept clear at the bottom for the shortcuts | 16% of height |
 
-Adding poems changes the shuffle for the whole year (the order is seeded by
-the year and the length of the list), so add in batches.
+Examples:
 
-## Run it
+- Always dark: `/wallpaper?tz=America/Toronto&theme=dark`
+- A phone with a 1440 by 3120 screen: `/wallpaper?tz=America/Toronto&w=1440&h=3120`
+- More room for notifications: `/wallpaper?tz=America/Toronto&top=650`
+- See what March 4th will be: `/wallpaper?d=2026-03-04`
+
+The web page takes `?d=` and `?theme=` the same way.
+
+## Adding or changing poems
+
+1. Open `data/poems.ts`.
+2. Add an entry with `title`, `author`, `year` and `text`. Keep the text
+   exactly as it should print: leading spaces are indentation, a blank line
+   is a stanza break.
+3. Only use poems in the public domain. In the US that means published
+   before 1930. Keep the year on the entry so this can be checked.
+4. Push to `main`.
+
+Changing the list reshuffles the whole year, so add poems in batches
+rather than one at a time if you want past days to stay put.
+
+## Run it on your computer
 
     npm install
     npm run dev
 
-Font: Courier Prime (SIL Open Font License), from the `@fontsource/courier-prime` package.
+Then open http://localhost:3000 for the page and
+http://localhost:3000/wallpaper?theme=light for the image.
+
+## Credits
+
+Font: Courier Prime, SIL Open Font License, from the
+`@fontsource/courier-prime` package. Poems: public domain, see the year on
+each entry.
