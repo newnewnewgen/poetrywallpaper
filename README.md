@@ -7,12 +7,14 @@ Live at https://poetrywallpaper.vercel.app
 
 ## How it works
 
-1. **The poems live in `data/poems/`.** A few hundred public-domain poems
-   in numbered batch files, from the Renaissance to the 1920s: the carpe
-   diem poems the list started with, then Shakespeare and his
-   contemporaries, the Romantics, the Victorians, Dickinson, the American
-   poets, Housman and Frost. Each entry has a title, author, year of first
-   publication, and the text exactly as it should print.
+1. **The poems live in `data/poems/`.** 268 public-domain poems in
+   numbered batch files, every one carpe diem in the broad sense: time
+   passing, the present moment, mortality as a spur, making the most of a
+   life. Most texts were pulled by script from PoetryDB and Project
+   Gutenberg editions; the rest were typed and checked against them. Each
+   entry has a title, author, year of first publication, and the text
+   exactly as it should print. Poems that were once in the list but are
+   about other things sit in `data/archive`, imported nowhere.
 
 2. **Each day gets one poem.** The order is a shuffle seeded by the year, so
    the same day shows the same poem on every device, and the year does not
